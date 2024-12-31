@@ -1,0 +1,22 @@
+@keyframes loading-bar {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.animate-loading-bar {
+  animation: loading-bar 1.5s infinite linear;
+}
+
+.controls-visible {
+  opacity: 1;
+  transition: opacity 0.5s ease-in-out;
+}
+
+.controls-hidden {
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out;
+}
