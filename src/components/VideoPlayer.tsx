@@ -53,7 +53,6 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ viewLink }) => {
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (document.activeElement === videoRef.current) {
         switch (e.key) {
           case ' ':
             e.preventDefault();
@@ -74,7 +73,6 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ viewLink }) => {
           default:
             break;
         }
-      }
     };
 
     document.addEventListener('keydown', handleKeyDown);
@@ -184,7 +182,8 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ viewLink }) => {
     const newTime = parseFloat(e.target.value);
     if (videoRef.current && grainPlayerRef.current) {
       videoRef.current.currentTime = newTime;
-      grainPlayerRef.current.restart(0, newTime);
+      grainPlayerRef.current.stop();
+      if(isPlaying) grainPlayerRef.current.start("0", newTime);
       setCurrentTime(newTime);
     }
   };

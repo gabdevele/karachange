@@ -33,16 +33,20 @@ const App = () => {
     }
     setLoading(true);
     try {
-      const response = await fetch(`http://localhost:4000/download?url=${encodeURIComponent(url)}`);
+      const response = await fetch(`https://gabdevele.ddns.net/karachange/api/download?url=${encodeURIComponent(url)}`);
       const data = await response.json();
       if (data.viewLink) {
         setViewLink(data.viewLink);
       } else {
-        throw new Error('Error: ' + data.error);
+        throw new Error(data.error);
       }
     } catch (error) {
       console.error("Error while fetching video link: ", error);
-      toast.error('Sorry, an error occurred. Please try again later.');
+      if (error instanceof Error) {
+        toast.error(error.message);
+      } else {
+        toast.error('An unknown error occurred.');
+      }
     } finally {
       setLoading(false);
     }
