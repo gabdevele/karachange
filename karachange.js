@@ -21,6 +21,8 @@ if (!fs.existsSync(downloadDir)) {
   fs.mkdirSync(downloadDir);
 }
 
+app.set('trust proxy', true);
+
 app.use(cors(
   {
     origin: 'https://gabdevele.ddns.net',
