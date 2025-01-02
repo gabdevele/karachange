@@ -14,7 +14,7 @@ const __dirname = path.dirname(__filename);
 
 const app = express();
 const port = 8341;
-const downloadDir = path.join(__dirname, 'downloads');
+const downloadDir = "/var/www/html/karachange/download";
 const BASE_URL = `https://gabdevele.ddns.net/karachange/view`;
 
 if (!fs.existsSync(downloadDir)) {
