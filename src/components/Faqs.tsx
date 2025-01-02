@@ -1,6 +1,6 @@
-import { Disclosure, DisclosureButton, DisclosurePanel } from '@headlessui/react';
+import { Disclosure, DisclosureButton } from '@headlessui/react';
 import { Icon } from '@iconify/react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 
 const faqData = [
   {
@@ -31,7 +31,7 @@ const Faqs = () => {
             {({ open }) => (
               <>
                 <DisclosureButton className="group flex w-full items-center justify-between">
-                  <span className="text-sm/6 text-left font-medium text-white group-hover:text-white/80">
+                  <span className="text-sm text-left font-medium text-white group-hover:text-white/80 flex-grow">
                     {faq.question}
                   </span>
                   <Icon
@@ -41,15 +41,21 @@ const Faqs = () => {
                     className={`ml-2 flex-shrink-0 fill-white/60 group-hover:fill-white/50 ${open ? 'rotate-180' : ''}`}
                   />
                 </DisclosureButton>
-                <motion.div
-                  initial={{ opacity: 0, height: 0 }}
-                  animate={{ opacity: open ? 1 : 0, height: open ? 'auto' : 0 }}
-                  transition={{ duration: 0.3 }}
-                >
-                  <DisclosurePanel className="mt-2 text-sm/5 text-white/50">
-                    {faq.answer}
-                  </DisclosurePanel>
-                </motion.div>
+                <AnimatePresence initial={false}>
+                  {open && (
+                    <motion.div
+                      key="content"
+                      initial={{ opacity: 0, height: 0 }}
+                      animate={{ opacity: 1, height: 'auto' }}
+                      exit={{ opacity: 0, height: 0 }}
+                      transition={{ duration: 0.3 }}
+                    >
+                      <div className="mt-2 text-sm text-white/50">
+                        {faq.answer}
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
               </>
             )}
           </Disclosure>
