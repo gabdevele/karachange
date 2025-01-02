@@ -82,6 +82,7 @@ app.get('/download', async (req, res) => {
   }
 });
 
+//I should use nginx
 app.get('/view/:videoId', (req, res) => {
   const videoId = req.params.videoId;
   const filePath = path.join(downloadDir, `${videoId}.mp4`);

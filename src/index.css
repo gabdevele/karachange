@@ -3,6 +3,7 @@
 @tailwind utilities;
 
 body{
-    font-family: "IBM Plex Mono", serif;
+    font-family: "Montserrat", serif;
     font-weight: 400;
+    font-style: normal;
 }

@@ -11,10 +11,12 @@
   },
   "dependencies": {
     "@distube/ytdl-core": "^4.15.8",
+    "@headlessui/react": "^2.2.0",
     "@iconify/react": "^5.1.0",
     "cors": "^2.8.5",
     "express": "^4.21.2",
     "express-rate-limit": "^7.5.0",
+    "motion": "^11.15.0",
     "node-cron": "^3.0.3",
     "pitchfinder": "^2.3.2",
     "progress-stream": "^2.0.0",
