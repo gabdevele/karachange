@@ -25,9 +25,9 @@ const Faqs = () => {
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5, delay: 0.6 }}
     >
-      <div className="divide-y divide-white/5 rounded-xl bg-primary">
+      <div className="divide-y divide-white/5 rounded-xl bg-primary w-full max-w-2xl">
         {faqData.map((faq, index) => (
-          <Disclosure as="div" className="p-6 w-full sm:min-w-96 sm:max-w-96 sm:w-auto" key={index} >
+          <Disclosure as="div" className="p-6 w-full" key={index}>
             {({ open }) => (
               <>
                 <DisclosureButton className="group flex w-full items-center justify-between">
@@ -38,7 +38,7 @@ const Faqs = () => {
                     icon="akar-icons:chevron-down"
                     width={24}
                     height={24}
-                    className={`size-5 fill-white/60 group-hover:fill-white/50 ${open ? 'rotate-180' : ''}`}
+                    className={`ml-2 flex-shrink-0 fill-white/60 group-hover:fill-white/50 ${open ? 'rotate-180' : ''}`}
                   />
                 </DisclosureButton>
                 <motion.div
