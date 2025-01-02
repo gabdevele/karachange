@@ -31,8 +31,8 @@ app.use(helmet());
 
 const limiter = rateLimit({
   windowMs: 24 * 60 * 60 * 1000,
-  max: 10, 
-  message: { error: 'Rate limit exceeded: 10 downloads per day allowed' },
+  max: 5, 
+  message: { error: 'Rate limit exceeded: 5 downloads per day allowed' },
 });
 app.use('/download', limiter);
 
@@ -44,6 +44,7 @@ app.get('/download', async (req, res) => {
 
   try {
     const info = await ytdl.getInfo(url);
+    if(info.videoDetails.isLiveContent) return res.status(400).json({ error: 'Live streams are not supported' });
     const durationSeconds = parseInt(info.videoDetails.lengthSeconds, 10);
     if (durationSeconds > 8 * 60) {
       return res.status(400).json({ error: 'Video exceeds the maximum allowed duration of 8 minutes' });

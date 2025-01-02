@@ -101,6 +101,18 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ viewLink }) => {
     };
   }, []);
 
+  useEffect(() => {
+    return () => {
+      if (videoRef.current) {
+        videoRef.current.pause();
+      }
+      if (grainPlayerRef.current) {
+        grainPlayerRef.current.stop();
+        grainPlayerRef.current.disconnect();
+      }
+    };
+  }, []);
+
   const handlePitchChange = (steps: number) => {
     const newPitch = Math.max(-7, Math.min(7, pitch + steps));
     if (grainPlayerRef.current) {
