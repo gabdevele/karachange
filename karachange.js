@@ -6,6 +6,8 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import rateLimit from 'express-rate-limit';
 import cron from 'node-cron';
+import helmet from 'helmet';
+
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -13,14 +15,19 @@ const __dirname = path.dirname(__filename);
 const app = express();
 const port = 8341;
 const downloadDir = path.join(__dirname, 'downloads');
-const BASE_URL = `https://gabdevele.ddns.net/karachange/api`;
+const BASE_URL = `https://gabdevele.ddns.net/karachange/view`;
 
 if (!fs.existsSync(downloadDir)) {
   fs.mkdirSync(downloadDir);
 }
 
-app.use(cors());
-app.use('/downloads', express.static(downloadDir));
+app.use(cors(
+  {
+    origin: 'https://gabdevele.ddns.net',
+    methods: 'GET',
+  }
+));
+app.use(helmet());
 
 const limiter = rateLimit({
   windowMs: 24 * 60 * 60 * 1000,
@@ -31,8 +38,7 @@ app.use('/download', limiter);
 
 app.get('/download', async (req, res) => {
   const url = req.query.url;
-
-  if (!ytdl.validateURL(url)) {
+  if (!url || typeof url !== 'string' || !ytdl.validateURL(url)) {
     return res.status(400).json({ error: 'Invalid URL' });
   }
 
@@ -48,7 +54,7 @@ app.get('/download', async (req, res) => {
 
     if (fs.existsSync(filePath)) {
       return res.json({
-        viewLink: `${BASE_URL}/view/${videoId}`,
+        viewLink: `${BASE_URL}/${videoId}.mp4`,
       });
     }
 
@@ -56,42 +62,30 @@ app.get('/download', async (req, res) => {
       quality: 'highestvideo',
       filter: 'videoandaudio',
     });
+    
     const videoStream = ytdl(url, { format });
     const fileStream = fs.createWriteStream(filePath);
 
     videoStream.pipe(fileStream);
 
     videoStream.on('error', (error) => {
-      console.error(error);
+      console.error('Video stream error:', error);
       res.status(500).json({ error: 'Failed to download the video' });
     });
 
     fileStream.on('finish', () => {
       res.json({
-        viewLink: `${BASE_URL}/view/${videoId}`,
+        viewLink: `${BASE_URL}/${videoId}.mp4`,
       });
     });
 
     fileStream.on('error', (error) => {
-      console.error(error);
+      console.error('File stream error:', error);
       res.status(500).json({ error: 'Failed to download the video' });
     });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Failed to process the request' });
-  }
-});
-
-//I should use nginx
-app.get('/view/:videoId', (req, res) => {
-  const videoId = req.params.videoId;
-  const filePath = path.join(downloadDir, `${videoId}.mp4`);
-  if (fs.existsSync(filePath)) {
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Headers', 'Range');
-    res.sendFile(filePath);
-  } else {
-    res.status(404).json({ error: 'Video not found' });
   }
 });
 
