@@ -61,7 +61,7 @@ const MainCard: React.FC = () => {
 
   const handleShineEnd = (e: React.AnimationEvent<HTMLElement>) => {
     const target = e.target as HTMLElement; //nosense cause I already wrote HTMLElement but typescript gives me error.
-    target.style.backgroundImage = 'linear-gradient(90deg, var(--text-color) 17.8%, #fff 0%, var(--text-color) 100%)';
+    target.style.backgroundImage = 'linear-gradient(90deg, var(--text-color) 17.85%, #fff 0%, var(--text-color) 100%)';
   };
 
   return (
