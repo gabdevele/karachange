@@ -81,7 +81,7 @@ const MainCard: React.FC = () => {
       </span>
     </motion.h1>
       <p className="text-md sm:text-lg text-gray-400 mb-8 text-center">
-        Transform your karaoke experience! <br />
+        Change your karaoke experience! <br />
         Adjust key and tempo effortlessly without any extensions or downloads.
       </p>
       <div className="flex items-center mb-4">
